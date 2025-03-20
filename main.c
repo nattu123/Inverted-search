@@ -1,5 +1,16 @@
 #include "inv.h"
 
+Hash_t hash_table[Hash_Table_Size] ;
+
+void hash_table_init(Hash_t *hash_table)
+{
+    for(int i=0;i<Hash_Table_Size;i++)
+    {
+        hash_table[i].hashlink = NULL;
+        hash_table[i].key = i;
+
+    }
+}
 
 int main(int argc , char **argv) 
 {
@@ -27,17 +38,28 @@ int main(int argc , char **argv)
     printf("4.update database\n");  
     printf("5.save database\n");  
     printf("6.Exit\n");
-    printf("enter the choice : ");
-
-    Hash_t *hash_table[Hash_Table_Size] = {NULL};
-
-
+    
+    
+    
+    
     int option;
-    scanf("%d",&option);
-
-    switch(option)
+    hash_table_init(hash_table);
+    while(1)
     {
-        // case 1 : create_database() ;
+        printf("enter the choice : ");
+        scanf("%d",&option);
+        switch(option)
+        {
+            case 1 : 
+                create_database(head) ;
+                break;
+            case 2 : 
+                display_database();
+                break;
+            case 5 :
+                exit(0)    ;
+                break;
+        }
+        
     }
-
 }

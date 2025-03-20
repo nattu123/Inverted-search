@@ -7,6 +7,7 @@
 
 #define Hash_Table_Size 28 
 
+
 typedef enum{
     FAILURE,
     SUCCESS
@@ -17,7 +18,7 @@ typedef struct Slist
 {
     char arr[50];
     struct Slist *next; 
-
+    
 }slist; 
 
 typedef struct hash
@@ -36,10 +37,12 @@ typedef struct mainnode
 
 typedef struct subnode
 {
-    char filename[50];
-    int word_count;
     struct subnode *subnode_link; 
+    int word_count;
+    char filename[50];
 }subnode_t;
+
+extern Hash_t hash_table[Hash_Table_Size];
 
 Status read_and_validate(int argc,char **argv,slist **head);
 Status file_availability(char *argv);
@@ -47,5 +50,8 @@ Status check_if_file_empty(char *argv,FILE *fptr);
 Status insert_first(slist **head,char *argv);
 Status check_duplicate(char *argv, slist **head);
 void print_list(slist *head);
+Status create_database(slist *head);
+Status insert_into_hashtable(char *arr,char *fname);
+void display_database();
 
 #endif
