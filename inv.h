@@ -53,5 +53,6 @@ void print_list(slist *head);
 Status create_database(slist *head);
 Status insert_into_hashtable(char *arr,char *fname);
 void display_database();
+int hash_function(char c);
 
 #endif

@@ -85,7 +85,7 @@ Status insert_into_hashtable(char *arr,char *fname)
     new_main_node->mainnode_link = hash_table[index].hashlink;
     hash_table[index].hashlink = new_main_node; // inserting recently created mainnode at first 
     new_main_node->subnode_link = NULL;
-    // add this to the new subnode
+    // add this to the new subnode  
     
     subnode_t *new_sub_node = malloc(sizeof(subnode_t));
     if(!new_sub_node)
@@ -102,4 +102,3 @@ Status insert_into_hashtable(char *arr,char *fname)
     strcpy(new_sub_node->filename,fname);
     return SUCCESS;
 }
-
