@@ -33,7 +33,7 @@ void display_database()
                 sub_temp = sub_temp->subnode_link;
             }
 
-            printf("  -----------------------------------------\n");
+            printf("  -----------------------------------------\n\n");
             main_temp = main_temp->mainnode_link;
         }
     }

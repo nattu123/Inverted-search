@@ -48,6 +48,7 @@ int main(int argc , char **argv)
     {
         printf("enter the choice : ");
         scanf("%d",&option);
+        char arr[100];
         switch(option)
         {
             case 1 : 
@@ -56,8 +57,28 @@ int main(int argc , char **argv)
             case 2 : 
                 display_database();
                 break;
+            case 3 :
+                printf("ENter the word to be searched for : ");
+                scanf("%s",arr);
+                if(search_database(arr) == FAILURE)
+                {
+                    fprintf(stderr,"The word not found in the database\n");
+                }
+                break;
+            
+            case 4 :
+                printf("Enter the name of the backup file : ");
+                scanf("%s",arr);
+                save_database(arr);
+            
             case 5 :
-                exit(0)    ;
+                printf("NEter the backup file : \n");
+                scanf("%s",arr);
+                
+
+            
+            case 6 :
+                exit(0);
                 break;
         }
         

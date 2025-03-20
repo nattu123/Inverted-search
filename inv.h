@@ -54,5 +54,7 @@ Status create_database(slist *head);
 Status insert_into_hashtable(char *arr,char *fname);
 void display_database();
 int hash_function(char c);
+Status search_database(char *arr);
+void save_database(char *arr);
 
 #endif
