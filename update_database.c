@@ -68,7 +68,7 @@ Status update_database(char *arr,slist **head)
             fscanf(fptr,"#\n");
         }
     }
-    create_database(new_head);
+    create_database_parallel(new_head);
     printf("\n new_list \n");
     print_list(new_head);
     printf("\n f_list \n");

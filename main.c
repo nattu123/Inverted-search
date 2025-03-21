@@ -60,7 +60,7 @@ int main(int argc , char **argv)
                     printf("can only create datbase once otherwise it would leas to overwrite\n");
                     break;
                 }
-                create_database(head) ;
+                create_database_parallel(head) ;
                 flag_create =1;
                 break;
             case 2 : 

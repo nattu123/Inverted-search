@@ -28,6 +28,34 @@ void *insert_thread(void *arg)
     return NULL;
 }
 
+Status create_database_parallel(slist *head)
+{
+    /* what if the files are so big and all the thread are occupied then it will get out of the inner while loop and
+       wait for the threads to be completed */
+
+    pthread_t threads[10]; // creating 10 threads , my device has 12 cores 
+    int i;
+    while(head)
+    {
+        i = 0;
+        
+        while(head && i<10)
+        {
+            if(pthread_create(&threads[i],NULL,insert_thread,head->arr) != 0)
+            {
+                printf("error could create thread for file : %s\n",head->arr);
+                continue;
+            }
+            head = head->next;
+            i++;
+        }
+
+        for(int j=0;j<i;j++)
+        {
+            pthread_join(threads[j],NULL);
+        }
+    }
+}
 // Status create_database(slist *head)
 // {
 //     while(head != NULL)

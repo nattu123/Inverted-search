@@ -53,7 +53,7 @@ Status check_if_file_empty(char *argv,FILE *fptr);
 Status insert_first(slist **head,char *argv);
 Status check_duplicate(char *argv, slist **head);
 void print_list(slist *head);
-Status create_database(slist *head);
+Status create_database_parallel(slist *head);
 Status insert_into_hashtable(char *arr,char *fname);
 void display_database();
 int hash_function(char c);
