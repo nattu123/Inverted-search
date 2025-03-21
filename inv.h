@@ -4,9 +4,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <pthread.h>
+
 
 #define Hash_Table_Size 28 
 
+extern pthread_mutex_t hash_table_mutex; //declaring a global mutex 
 
 typedef enum{
     FAILURE,

@@ -1,5 +1,7 @@
 #include "inv.h"
 
+pthread_mutex_t hash_table_mutex = PTHREAD_MUTEX_INITIALIZER; // initialising mutex can also use pthread_mutex_init()
+
 Hash_t hash_table[Hash_Table_Size] ;
 
 void hash_table_init(Hash_t *hash_table)

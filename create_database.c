@@ -9,34 +9,56 @@ int hash_function(char c)
 
 }
 
-Status create_database(slist *head)
+void *insert_thread(void *arg)
 {
-    while(head != NULL)
-    {
-        FILE *fptr; 
-        fptr = fopen(head->arr,"r");
-        if(fptr == NULL)
-        {
-            printf("error in opening the file %s",head->arr);
-            return FAILURE;
-        }
-        printf("\nin file %s\n",head->arr);
+    char *f_name = (char *)arg;
+    FILE *fptr = fopen(f_name,"r");
 
-        char arr[50];
-        while(fscanf(fptr,"%49s",arr) == 1)
-        {
-            insert_into_hashtable(arr,head->arr);
-        }
-        fclose(fptr);
-        head = head->next;
+    if(fptr == NULL)
+    {
+        printf("Eroor could not open file \"%s\" \n",f_name);
+        return NULL;
     }
-    return SUCCESS;
+    char word[50];
+    while(fscanf(fptr,"%s",word) == 1)
+    {
+        insert_into_hashtable(word,f_name);
+    }
+    fclose(fptr);
+    return NULL;
 }
+
+// Status create_database(slist *head)
+// {
+//     while(head != NULL)
+//     {
+//         FILE *fptr; 
+//         fptr = fopen(head->arr,"r");
+//         if(fptr == NULL)
+//         {
+//             printf("error in opening the file %s",head->arr);
+//             return FAILURE;
+//         }
+//         printf("\nin file %s\n",head->arr);
+
+//         char arr[50];
+//         while(fscanf(fptr,"%49s",arr) == 1)
+//         {
+//             insert_into_hashtable(arr,head->arr);
+//         }
+//         fclose(fptr);
+//         head = head->next;
+//     }
+//     return SUCCESS;
+// }
+
+
 
 Status insert_into_hashtable(char *arr,char *fname)
 {
     int index = hash_function(*arr); // finding index
     printf("Inserting word: '%s' from file: '%s' at index: %d\n", arr, fname, index);
+    pthread_mutex_lock(&hash_table_mutex); // locking hashtable so other threads wont be accessing this 
     mainnode_t *temp = hash_table[index].hashlink;
 
     while(temp)
@@ -45,11 +67,13 @@ Status insert_into_hashtable(char *arr,char *fname)
         {
             subnode_t *sub_temp = temp->subnode_link;
 
+
             while (sub_temp)
             {
                 if(strcmp(sub_temp->filename,fname)==0)
                 {
                     sub_temp->word_count++;
+                    pthread_mutex_unlock(&hash_table_mutex); // unlocking mutex before returning do that other threadscan use this hashtable
                     return SUCCESS;
                 }
                 sub_temp = sub_temp->subnode_link;
@@ -60,14 +84,16 @@ Status insert_into_hashtable(char *arr,char *fname)
             if(!new_sub_node)
             {
                 printf("subnode not created \n");
+                pthread_mutex_unlock(&hash_table_mutex);
                 return FAILURE;
             }
-
+            
             new_sub_node->word_count = 1 ; 
             strcpy(new_sub_node->filename,fname);
             new_sub_node->subnode_link = temp->subnode_link;
             temp->subnode_link = new_sub_node;
             temp->filecount++;
+            pthread_mutex_unlock(&hash_table_mutex); // unlocking mutex 
             return SUCCESS;
         }
         temp = temp->mainnode_link; // next main node
@@ -78,6 +104,7 @@ Status insert_into_hashtable(char *arr,char *fname)
     if(!new_main_node)
     {
         printf("memory allocation for the main noode failed");
+        pthread_mutex_unlock(&hash_table_mutex); // unlocking mutex before returning 
         return FAILURE;
     }
     new_main_node->filecount = 1;  
@@ -92,6 +119,7 @@ Status insert_into_hashtable(char *arr,char *fname)
     {
         printf("memeory allocation for subnode failed\n");
         free(new_main_node); // freess main node if memory allocation for subnode fails , prevennts memory leak in casse of failed mem allocation for subnode
+        pthread_mutex_unlock(&hash_table_mutex); // unlocking mutex before returning 
         return FAILURE;
     }
     
@@ -100,5 +128,6 @@ Status insert_into_hashtable(char *arr,char *fname)
     new_sub_node->subnode_link = NULL;
     new_sub_node->word_count = 1;
     strcpy(new_sub_node->filename,fname);
+    pthread_mutex_unlock(&hash_table_mutex); // unlocking after modification 
     return SUCCESS;
 }
