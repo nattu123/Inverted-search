@@ -35,8 +35,8 @@ int main(int argc , char **argv)
     printf("1.Create Database\n");  
     printf("2.Dispaly database\n");  
     printf("3.Search database\n");  
-    printf("4.update database\n");  
-    printf("5.save database\n");  
+    printf("4.save database\n");  
+    printf("5.update database\n");  
     printf("6.Exit\n");
     
     
@@ -44,6 +44,7 @@ int main(int argc , char **argv)
     
     int option;
     hash_table_init(hash_table);
+    int flag_create =0;
     while(1)
     {
         printf("enter the choice : ");
@@ -52,7 +53,13 @@ int main(int argc , char **argv)
         switch(option)
         {
             case 1 : 
+                if(flag_create)
+                {
+                    printf("can only create datbase once otherwise it would leas to overwrite\n");
+                    break;
+                }
                 create_database(head) ;
+                flag_create =1;
                 break;
             case 2 : 
                 display_database();
@@ -70,14 +77,34 @@ int main(int argc , char **argv)
                 printf("Enter the name of the backup file : ");
                 scanf("%s",arr);
                 save_database(arr);
+                break;
             
             case 5 :
+                if(flag_create)
+                {
+                    printf("daTABASE already created could not update\n");
+                    break;
+                }
                 printf("NEter the backup file : \n");
                 scanf("%s",arr);
-                
+                if(validate_backupfile(arr) == FAILURE)
+                {
+                    printf("enter a valid .txt file \n");
+                    break;
+                }
+                else
+                {
+                    printf("Backup file is validated \n");
+                    update_database(arr,&head);
+
+                }
+                break;
 
             
             case 6 :
+                delete_list(&head);
+                delete_hashtable();
+                printf("hashtable and file list ddeleted\n");
                 exit(0);
                 break;
         }

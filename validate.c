@@ -2,7 +2,7 @@
 
 Status read_and_validate(int argc,char **argv,slist **head)
 {
-    for(int i = 1;i<argc;i++)
+     for(int i = 1;i<argc;i++)
     {
         char *temp;
         if(temp = strstr(argv[i],".txt"))

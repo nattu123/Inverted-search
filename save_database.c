@@ -3,6 +3,9 @@
 void save_database(char *arr)
 {
     FILE *fptr = fopen(arr,"w");
+    if(fptr == NULL)
+    {
+        printf(" Error: Could not open file \"%s\" for writing.\n", arr);    }
     for(int i=0;i<Hash_Table_Size;i++)
     {
         mainnode_t *main_temp =  hash_table[i].hashlink;
@@ -19,4 +22,5 @@ void save_database(char *arr)
             main_temp = main_temp->mainnode_link;
         }
     }
+    fclose(fptr);
 }

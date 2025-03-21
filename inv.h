@@ -56,5 +56,9 @@ void display_database();
 int hash_function(char c);
 Status search_database(char *arr);
 void save_database(char *arr);
-
+Status validate_backupfile(char *arr);
+Status update_database(char *arr,slist **head);
+void delete_list(slist **head);
+void delete_from_list(slist **head,char *fname);
+void delete_hashtable();
 #endif
